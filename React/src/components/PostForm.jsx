@@ -4,10 +4,12 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import { toast } from "react-toastify";
 import { addPost } from "../redux/apiCalls";
+import { useDispatch } from "react-redux";
 
 export const PostForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputs, setInputs] = useState({});
+  const dispatch = useDispatch();
 
   const handleInputsChange = (e) => {
     setInputs((prev) => {
@@ -19,8 +21,9 @@ export const PostForm = () => {
     setIsModalOpen(true);
   };
   const handleOk = async () => {
-    await addPost(inputs);
-    
+    await addPost(dispatch, inputs);
+    setInputs({});
+    setIsModalOpen(false);
   };
   const handleCancel = () => {
     setInputs({});

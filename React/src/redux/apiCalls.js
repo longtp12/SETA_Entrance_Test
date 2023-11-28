@@ -1,17 +1,12 @@
 import axios from "axios";
-import { getPostsFailure, getPostsStart, getPostsSuccess } from "./postsSlice";
-import { toast } from "react-toastify";
-
-const toastSettings = {
-  position: "top-right",
-  autoClose: 2000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-  theme: "colored",
-};
+import {
+  addPostFailure,
+  addPostStart,
+  addPostSuccess,
+  getPostsFailure,
+  getPostsStart,
+  getPostsSuccess,
+} from "./postsSlice";
 
 export const getPosts = async (dispatch) => {
   dispatch(getPostsStart());
@@ -23,16 +18,16 @@ export const getPosts = async (dispatch) => {
   }
 };
 
-export const addPost = async (post) => {
+export const addPost = async (dispatch, post) => {
+  dispatch(addPostStart());
   try {
-    const res = await axios.post("https://jsonplaceholder.typicode.com/posts", {
+    await axios.post("https://jsonplaceholder.typicode.com/posts", {
       title: post.title,
       body: post.body,
       userId: Math.floor(Math.random() * 100),
     });
-    if (res.data) return toast.success("Post added!", { ...toastSettings });
-    else return toast.error("Something went wrong", { ...toastSettings });
+    dispatch(addPostSuccess());
   } catch (error) {
-    console.log(error);
+    dispatch(addPostFailure());
   }
 };

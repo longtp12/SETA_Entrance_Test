@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+import { toastSettings } from "../toastSettings";
 
 const postsSlice = createSlice({
   name: "posts",
@@ -29,11 +31,12 @@ const postsSlice = createSlice({
     },
     addPostSuccess: (state) => {
       state.isFetching = false;
-      console.log("Post Added");
+      toast.success("Post added", { ...toastSettings });
     },
     addPostFailure: (state) => {
       state.isFetching = false;
       state.error = true;
+      toast.error("Something went wrong", { ...toastSettings });
     },
   },
 });
